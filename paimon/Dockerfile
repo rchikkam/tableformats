@@ -1,0 +1,31 @@
+FROM apache/spark:3.5.6
+
+# Set working directory to Spark's jars folder
+WORKDIR /opt/spark/jars
+
+# Download necessary JARs from Maven Central
+RUN curl -LO https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar && \
+    curl -LO https://repo1.maven.org/maven2/org/apache/paimon/paimon-spark-3.5/1.2.0/paimon-spark-3.5-1.2.0.jar && \
+    curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.1/hadoop-aws-3.3.1.jar && \
+    curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-common/3.3.1/hadoop-common-3.3.1.jar && \ 
+    curl -LO https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar 
+
+# Set environment variable for Spark shell
+ENV HOME=/root
+
+# Set Spark Shell as default command with Iceberg + JDBC + S3 configs
+ENTRYPOINT ["/opt/spark/bin/spark-sql",\
+  "--conf", "spark.sql.catalog.paimon=org.apache.paimon.spark.SparkCatalog", \
+  "--conf", "spark.sql.catalog.paimon.warehouse=file:/tmp/paimon", \
+  "--conf", "spark.sql.extensions=org.apache.paimon.spark.extensions.PaimonSparkSessionExtensions",\
+  "--conf", "spark.sql.catalog.paimon.metastore=jdbc", \
+  "--conf", "spark.sql.catalog.paimon.uri=jdbc:postgresql://catalog-db:5432/paimondb",\
+  "--conf", "spark.sql.catalog.paimon.jdbc.user=iceberg",\
+  "--conf", "spark.sql.catalog.paimon.jdbc.password=iceberg",\
+  "--conf", "spark.sql.catalog.paimon.warehouse=s3a://warehouse2/",\
+  "--conf", "spark.hadoop.fs.s3a.endpoint=http://minio:9000",\
+  "--conf", "spark.hadoop.fs.s3a.access.key=admin",\
+  "--conf", "spark.hadoop.fs.s3a.secret.key=password",\
+  "--conf", "spark.hadoop.fs.s3a.connection.ssl.enabled=false", \
+  "--conf", "spark.hadoop.fs.s3a.path.style.access=true",\
+  "--conf", "spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem"]
