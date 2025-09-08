@@ -13,7 +13,7 @@ RUN curl -LO https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.3/pos
 # Set environment variable for Spark shell
 ENV HOME=/root
 
-# Set Spark Shell as default command with Iceberg + JDBC + S3 configs
+# Set Spark Shell as default command with Paimon  + JDBC + S3 configs
 ENTRYPOINT ["/opt/spark/bin/spark-sql",\
   "--conf", "spark.sql.catalog.paimon=org.apache.paimon.spark.SparkCatalog", \
   "--conf", "spark.sql.catalog.paimon.warehouse=file:/tmp/paimon", \

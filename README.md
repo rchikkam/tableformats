@@ -12,12 +12,12 @@ This is organized into multiple folders.
 
     paimon folder contains a dockerfile to create paimon related images.
 
-        Create spark-sql that use paimon as tableformat and can connect to infra.
+        Create spark-sql image that use paimon as tableformat and can connect to infra.
 
             docker build -t <image-name> -f spark-paimon-dockerfile . 
         
         Create a database to hold paimon catalog info. (iceberg is also password)
-            psql -h localhost -p 5430 -U iceberg -d iceberg
+            psql -h localhost -p 5432 -U iceberg -d iceberg
 
             create database paimondb;
 
@@ -27,4 +27,23 @@ This is organized into multiple folders.
             docker run -it --network <network_name> <image_name>
 
         Please refer the following to explore paimon
-            https://paimon.apache.org/docs/master/spark/quick-start/
+            https://paimon.apache.org/docs/master/spark/quick-start
+
+    iceberg folder contains a docker file to create iceberg related images.
+
+        Create spark-sql image that use iceberg as table format and can connect to infra.
+        
+            docker build -t <image-name> 0f spark-iceberg-dockerfile .
+
+        Create a database to hold iceberg catalog info. (iceberg is also password)
+            psql -h localhost -p 5432 -U icenerg -d iceberg
+    
+            create database iceberg;
+
+        Start a container to connect to the infra
+            docker run -it --network <network_name> <image_name>
+
+        Please refer the following to explore iceberg
+            https://iceberg.apache.org/docs/1.9.1/spark-getting-started/
+
+ 
