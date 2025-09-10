@@ -19,8 +19,8 @@ ENTRYPOINT ["/opt/spark/bin/spark-sql",\
   "--conf", "spark.sql.catalog.demo=org.apache.iceberg.spark.SparkCatalog",\
   "--conf", "spark.sql.catalog.demo.catalog-impl=org.apache.iceberg.jdbc.JdbcCatalog",\
   "--conf", "spark.sql.catalog.demo.uri=jdbc:postgresql://catalog-db:5432/iceberg",\
-  "--conf", "spark.sql.catalog.demo.jdbc.user=iceberg",\
-  "--conf", "spark.sql.catalog.demo.jdbc.password=iceberg",\
+  "--conf", "spark.sql.catalog.demo.jdbc.user=admin",\
+  "--conf", "spark.sql.catalog.demo.jdbc.password=password",\
   "--conf", "spark.sql.catalog.demo.warehouse=s3a://warehouse/",\
   "--conf", "spark.hadoop.fs.s3a.endpoint=http://minio:9000",\
   "--conf", "spark.hadoop.fs.s3a.access.key=admin",\
