@@ -22,9 +22,13 @@ paimon folder contains a dockerfile(s) to create paimon related images.
             
     #Start a container to connect to the infra 
         docker run -it --network <network_name> <image_name>
+        
+    #Inside spark-sql run these before any operations.
+        USE paimon;
+        USE default;
 
-        Please refer the following to explore paimon
-            https://paimon.apache.org/docs/master/spark/quick-start
+    Please refer the following to explore paimon
+    https://paimon.apache.org/docs/master/spark/quick-start
 
 iceberg folder contains a docker file to create iceberg related images.
 
@@ -38,5 +42,5 @@ iceberg folder contains a docker file to create iceberg related images.
     #Start a container to connect to the infra
         docker run -it --network <network_name> <image_name>
 
-        Please refer the following to explore iceberg
-            https://iceberg.apache.org/docs/1.9.1/spark-getting-started/
+    Please refer the following to explore iceberg
+    https://iceberg.apache.org/docs/1.9.1/spark-getting-started/

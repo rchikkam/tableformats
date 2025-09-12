@@ -20,8 +20,8 @@ ENTRYPOINT ["/opt/spark/bin/spark-sql",\
   "--conf", "spark.sql.extensions=org.apache.paimon.spark.extensions.PaimonSparkSessionExtensions",\
   "--conf", "spark.sql.catalog.paimon.metastore=jdbc", \
   "--conf", "spark.sql.catalog.paimon.uri=jdbc:postgresql://catalog-db:5432/paimondb",\
-  "--conf", "spark.sql.catalog.paimon.jdbc.user=iceberg",\
-  "--conf", "spark.sql.catalog.paimon.jdbc.password=iceberg",\
+  "--conf", "spark.sql.catalog.paimon.jdbc.user=admin",\
+  "--conf", "spark.sql.catalog.paimon.jdbc.password=password",\
   "--conf", "spark.sql.catalog.paimon.warehouse=s3a://warehouse2/",\
   "--conf", "spark.hadoop.fs.s3a.endpoint=http://minio:9000",\
   "--conf", "spark.hadoop.fs.s3a.access.key=admin",\
