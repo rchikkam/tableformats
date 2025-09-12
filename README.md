@@ -44,3 +44,6 @@ iceberg folder contains a docker file to create iceberg related images.
 
     Please refer the following to explore iceberg
     https://iceberg.apache.org/docs/1.9.1/spark-getting-started/
+
+ducklake folder contains a README.md file that gives details on how to run. At this time we are not using a container for duckdb/ducklake
+
