@@ -15,8 +15,8 @@ Once inside duckdb you should run the following
         INSTALL postgres;
         LOAD postgres;
 
-    #This command establishes a connection with catalog (ducklakedb should exists prior to this command)
-        ATTACH 'ducklake:postgres:dbname=ducklakedb host=localhost user=admin password=password port=5431' AS mydl (DATA_PATH 's3://warehouse2');
+    #This command establishes a connection with catalog (ducklakedb should exists prior to this command. The data path should be same as iceberg data path.)
+        ATTACH 'ducklake:postgres:dbname=ducklakedb host=localhost user=admin password=password port=5431' AS mydl (DATA_PATH 's3://warehouse2',  OVERRIDE_DATA_PATH True);
 
     #These commands set the properties for object store (S3)
         SET s3_region='us-east-1';
