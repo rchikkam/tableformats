@@ -7,6 +7,7 @@ Goto a command prompt and run the following
 
 Once inside duckdb you should run the following
     #These commands install the necessary extensions
+  
         INSTALL https;
         LOAD https;
         INSTALL ducklake;
