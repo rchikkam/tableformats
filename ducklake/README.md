@@ -6,17 +6,6 @@ Goto a command prompt and run the following
     duckdb
 
 Once inside duckdb you should run the following
-    #This command establishes a connection with catalog (ducklakedb should exists prior to this command)
-        INSTALL https;
-        
-    #These commands set the properties for object store (S3)
-        SET s3_region='us-east-1';
-        SET s3_url_style='path';
-        SET s3_endpoint='localhost:9000';
-        SET s3_access_key_id='admin';
-        SET s3_secret_access_key='password';
-        set s3_use_ssl=false;
-        
     #These commands install the necessary extensions
         INSTALL https;
         LOAD https;
