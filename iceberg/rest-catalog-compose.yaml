@@ -24,11 +24,9 @@ services:
       # JDBC backend for metadata
       - CATALOG_JDBC_USER=admin
       - CATALOG_JDBC_PASSWORD=password
-      - CATALOG_URI=jdbc:postgresql://iceberg_pg_catalog:5432/iceberg
+      - CATALOG_URI=jdbc:postgresql://catalog-db:5432/iceberg
       # Catalog name
-      - REST_CATALOG_NAME=demo0  
-      - CATALOG_NAME=demo1 # Set custom catalog name
-      - CATALOG_CATALOG__NAME=demo  # Alternative format
+      - CATALOG_CATALOG__NAME=iceberg_rest
       # Additional debug/config options
       - JAVA_OPTS=-Dorg.apache.iceberg.rest.loglevel=DEBUG
 networks:

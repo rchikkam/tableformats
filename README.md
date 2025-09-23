@@ -1,49 +1,79 @@
-# Tableformats - Exploration
-This is the repo for how to easily use tableformats on dev/test environments.
+# Table Formats - Exploration
 
-This is organized into multiple folders.
+This repository demonstrates how to easily use various table formats (Apache Iceberg, Apache Paimon, and DuckLake) in development and test environments.
 
-infra folder contains a bare minimum minio + posgres docker compose file. You would normally not needing to deploy this often.
+## Quick Start
 
-    #Bring up the infra 
-        docker compose -f ./minio-postgres.yml up -d
+### 1. Start Infrastructure
+```bash
+cd infra
+docker compose -f minio-postgres.yaml up -d
+```
 
-    #Use the following command to get the network name. This may be named as infra_datanet.
-        docker network ls 
+This starts:
+- **PostgreSQL**: Catalog metadata storage (port 5431)
+- **MinIO**: S3-compatible object storage (ports 9000-9001)
+- **Network**: `infra_datanet` for service communication
 
-paimon folder contains a dockerfile(s) to create paimon related images.
+All required databases (`iceberg`, `paimon`, `ducklake`) are automatically created.
 
-    #Create spark-sql that use paimon as tableformat and can connect to infra.
-        docker build -t <image-name> -f spark-paimon-dockerfile . 
-        
-    #Create a database to hold paimon catalog info. (password is the password)
-            psql -h localhost -p 5432 -U admin
-            create database paimondb;
-            
-    #Start a container to connect to the infra 
-        docker run -it --network <network_name> <image_name>
-        
-    #Inside spark-sql run these before any operations.
-        USE paimon;
-        USE default;
+### 2. Choose Your Table Format
 
-    Please refer the following to explore paimon
-    https://paimon.apache.org/docs/master/spark/quick-start
+#### Apache Iceberg
+```bash
+cd iceberg
+# See README.md for detailed setup options (REST catalog or direct JDBC)
+```
 
-iceberg folder contains a docker file to create iceberg related images.
+#### Apache Paimon
+```bash
+cd paimon
+# See README.md for setup instructions
+```
 
-    #Create spark-sql image that use iceberg as table format and can connect to infra.
-        docker build -t <image-name> 0f spark-iceberg-dockerfile .
+#### DuckLake
+```bash
+cd ducklake
+# See README.md for host-based setup instructions
+```
 
-    #Create a database to hold iceberg catalog info. (password is the  password)
-        psql -h localhost -p 5432 -U admin
-        create database iceberg;
+## Repository Structure
 
-    #Start a container to connect to the infra
-        docker run -it --network <network_name> <image_name>
+```
+├── infra/                    # Shared infrastructure (PostgreSQL + MinIO)
+│   ├── minio-postgres.yaml   # Docker Compose for services
+│   └── init-databases.sql    # Database initialization script
+├── iceberg/                  # Apache Iceberg setup
+│   ├── README.md            # Detailed setup instructions
+│   ├── rest-catalog-compose.yaml
+│   ├── spark-iceberg-rest-dockerfile
+│   └── spark-iceberg-postgres-dockerfile
+├── paimon/                   # Apache Paimon setup  
+│   ├── README.md            # Detailed setup instructions
+│   └── spark-paimon-postgres-dockerfile
+└── ducklake/                 # DuckLake setup
+    └── README.md            # Detailed setup instructions
+```
 
-    Please refer the following to explore iceberg
-    https://iceberg.apache.org/docs/1.9.1/spark-getting-started/
+## Configuration Details
 
-ducklake folder contains a README.md file that gives details on how to run. At this time we are not using a container for duckdb/ducklake
+### Infrastructure Services
+- **PostgreSQL**: `localhost:5431` (admin/password)
+- **MinIO Console**: `localhost:9001` (admin/password)
+- **MinIO S3 API**: `localhost:9000`
+
+### Storage Warehouses
+- **Iceberg**: `s3a://warehouse0/`
+- **Paimon**: `s3a://warehouse1/`
+- **DuckLake**: `s3a://warehouse2/`
+
+## Getting Help
+
+Each table format folder contains detailed README files with:
+- Prerequisites and setup instructions
+- Testing examples
+- Configuration details
+- Troubleshooting tips
+
+For specific issues, refer to the individual README files in each folder.
 

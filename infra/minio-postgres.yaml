@@ -7,13 +7,15 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
-      POSTGRES_DB:   
+      POSTGRES_DB: postgres
     ports:
       - "5431:5432"
     networks:
       datanet:
     volumes:
       - catalog-data:/var/lib/postgresql/data
+      - ./init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
+    restart: unless-stopped
   
   minio:
     image: minio/minio:latest
@@ -29,6 +31,7 @@ services:
       datanet:
     volumes:
       - minio-data:/data
+    restart: unless-stopped
   
   create-bucket:
     image: minio/mc:latest

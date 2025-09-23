@@ -1,14 +1,21 @@
 FROM apache/spark:3.5.6
 
+# Version configuration
+ENV PAIMON_VERSION=1.2.0
+ENV HADOOP_VERSION=3.3.1
+ENV AWS_SDK_VERSION=1.11.1026
+ENV POSTGRES_VERSION=42.7.3
+ENV SPARK_VERSION=3.5
+
 # Set working directory to Spark's jars folder
 WORKDIR /opt/spark/jars
 
 # Download necessary JARs from Maven Central
-RUN curl -LO https://repo1.maven.org/maven2/org/postgresql/postgresql/42.7.3/postgresql-42.7.3.jar && \
-    curl -LO https://repo1.maven.org/maven2/org/apache/paimon/paimon-spark-3.5/1.2.0/paimon-spark-3.5-1.2.0.jar && \
-    curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.1/hadoop-aws-3.3.1.jar && \
-    curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-common/3.3.1/hadoop-common-3.3.1.jar && \ 
-    curl -LO https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.11.1026/aws-java-sdk-bundle-1.11.1026.jar 
+RUN curl -LO https://repo1.maven.org/maven2/org/postgresql/postgresql/${POSTGRES_VERSION}/postgresql-${POSTGRES_VERSION}.jar && \
+    curl -LO https://repo1.maven.org/maven2/org/apache/paimon/paimon-spark-${SPARK_VERSION}/${PAIMON_VERSION}/paimon-spark-${SPARK_VERSION}-${PAIMON_VERSION}.jar && \
+    curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/${HADOOP_VERSION}/hadoop-aws-${HADOOP_VERSION}.jar && \
+    curl -LO https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-common/${HADOOP_VERSION}/hadoop-common-${HADOOP_VERSION}.jar && \ 
+    curl -LO https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/${AWS_SDK_VERSION}/aws-java-sdk-bundle-${AWS_SDK_VERSION}.jar 
 
 # Set environment variable for Spark shell
 ENV HOME=/root
@@ -16,10 +23,9 @@ ENV HOME=/root
 # Set Spark Shell as default command with Paimon  + JDBC + S3 configs
 ENTRYPOINT ["/opt/spark/bin/spark-sql",\
   "--conf", "spark.sql.catalog.paimon=org.apache.paimon.spark.SparkCatalog", \
-  "--conf", "spark.sql.catalog.paimon.warehouse=file:/tmp/paimon", \
   "--conf", "spark.sql.extensions=org.apache.paimon.spark.extensions.PaimonSparkSessionExtensions",\
   "--conf", "spark.sql.catalog.paimon.metastore=jdbc", \
-  "--conf", "spark.sql.catalog.paimon.uri=jdbc:postgresql://catalog-db:5432/paimondb",\
+  "--conf", "spark.sql.catalog.paimon.uri=jdbc:postgresql://catalog-db:5432/paimon",\
   "--conf", "spark.sql.catalog.paimon.jdbc.user=admin",\
   "--conf", "spark.sql.catalog.paimon.jdbc.password=password",\
   "--conf", "spark.sql.catalog.paimon.warehouse=s3a://warehouse1/",\
