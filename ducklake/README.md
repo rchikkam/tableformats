@@ -9,25 +9,25 @@ duckdb
 
 ### 2. Install Required Extensions
 -- Install necessary extensions
-INSTALL https;
-LOAD https;
-INSTALL ducklake;
-LOAD ducklake;
-INSTALL postgres;
-LOAD postgres;
+    INSTALL https;
+    LOAD https;
+    INSTALL ducklake;
+    LOAD ducklake;
+    INSTALL postgres;
+    LOAD postgres;
 
 ### 3. Configure S3 Connection
 -- Set S3/MinIO properties
-SET s3_region='us-east-1';
-SET s3_url_style='path';
-SET s3_endpoint='localhost:9000';
-SET s3_access_key_id='admin';
-SET s3_secret_access_key='password';
-SET s3_use_ssl=false;
+    SET s3_region='us-east-1';
+    SET s3_url_style='path';
+    SET s3_endpoint='localhost:9000';
+    SET s3_access_key_id='admin';
+    SET s3_secret_access_key='password';
+    SET s3_use_ssl=false;
 
 ### 4. Connect to Catalog
 -- Attach DuckLake catalog (requires 'ducklake' database in PostgreSQL)
-ATTACH 'ducklake:postgres:dbname=ducklake host=localhost user=admin password=password port=5431' AS mydl (DATA_PATH 's3://warehouse2');
+    ATTACH 'ducklake:postgres:dbname=ducklake host=localhost user=admin password=password port=5431' AS mydl (DATA_PATH 's3://warehouse2');
 
 -- Switch to DuckLake catalog
 USE mydl;
