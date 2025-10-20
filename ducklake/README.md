@@ -9,38 +9,47 @@ duckdb
 
 ### 2. Install Required Extensions
 -- Install necessary extensions
-INSTALL https;
-LOAD https;
-INSTALL ducklake;
-LOAD ducklake;
-INSTALL postgres;
-LOAD postgres;
+    
+    INSTALL https;
+    LOAD https;
+    INSTALL ducklake;
+    LOAD ducklake;
+    INSTALL postgres;
+    LOAD postgres;
 
 ### 3. Configure S3 Connection
 -- Set S3/MinIO properties
-SET s3_region='us-east-1';
-SET s3_url_style='path';
-SET s3_endpoint='localhost:9000';
-SET s3_access_key_id='admin';
-SET s3_secret_access_key='password';
-SET s3_use_ssl=false;
+
+    SET s3_region='us-east-1';
+    SET s3_url_style='path';
+    SET s3_endpoint='localhost:9000';
+    SET s3_access_key_id='admin';
+    SET s3_secret_access_key='password';
+    SET s3_use_ssl=false;
 
 ### 4. Connect to Catalog
 -- Attach DuckLake catalog (requires 'ducklake' database in PostgreSQL)
-ATTACH 'ducklake:postgres:dbname=ducklake host=localhost user=admin password=password port=5431' AS mydl (DATA_PATH 's3://warehouse2');
+
+    ATTACH 'ducklake:postgres:dbname=ducklake host=localhost user=admin password=password port=5431' AS mydl 
+
 
 -- Switch to DuckLake catalog
-USE mydl;
+
+    SET schema='mydl.default';
+    SHOW TABLES;
 
 ## Testing the Setup
 -- Create a test table
-CREATE TABLE test_table (id INTEGER, name VARCHAR);
+
+    CREATE TABLE test_table (id INTEGER, name VARCHAR);
 
 -- Insert test data
-INSERT INTO test_table VALUES (1, 'test');
+
+    INSERT INTO test_table VALUES (1, 'test');
 
 -- Query the table
-SELECT * FROM test_table;
+
+    SELECT * FROM test_table;
 
 ## Documentation
 For more details, visit: https://ducklake.select/docs/stable/duckdb/introduction
