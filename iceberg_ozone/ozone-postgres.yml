@@ -1,0 +1,23 @@
+services:
+  ozone-db:
+    image: postgres:15
+    container_name: ozone_pg_catalog
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB:
+    ports:
+      - "5431:5432"
+    networks:
+      - ozone_net
+    volumes:
+      - ozone-data:/var/lib/postgresql/data
+    restart: unless-stopped
+  
+networks:
+  ozone_net:  
+    driver: bridge
+    name: ozone_net
+
+volumes:
+  ozone-data:
